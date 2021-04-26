@@ -7,9 +7,40 @@ servers:
 paths:
   /user/login:
     post:
+      tags:
+        - user
+      requestBody:
+        $ref: '#components/requestBodies/loginBody'
       responses:
-        "200":
+        '200':
           description: OK
+          content:
+            application/text:
+              schema:
+                properties:
+                  token:
+                    type: string
+
+  /user/logout:
+    post:
+      tags:
+        - user
+      security:
+        - bearerAuth: []
+      responses:
+        '401':
+          $ref: '#components/responses/UnauthorizedError'
+
+  /user/register:
+    post:
+      tags:
+        - user
+      requestBody:
+        $ref: '#/components/requestBodies/registerBody'
+      responses:
+        '401':
+          $ref: '#components/responses/UnauthorizedError'
+
 tags:
   - name: user
     description: user operation
@@ -17,3 +48,50 @@ tags:
     description: admin operation
   - name: subadmin
     description: subadmin operation
+
+components:
+  requestBodies:
+    loginBody:
+      description: log request body
+      required: true
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              password:
+                type: string
+            required:
+              - name
+              - password
+
+    registerBody:
+      description: register request body
+      required: true
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              password:
+                type: string
+              department:
+                type: string
+            required:
+              - name
+              - password
+              - department
+
+  responses:
+    UnauthorizedError:
+      description: Access token is missing or invalid
+
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT    # optional, arbitrary value for documentation purposes
