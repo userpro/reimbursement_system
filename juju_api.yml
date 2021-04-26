@@ -1,0 +1,19 @@
+openapi: "3.0.2"
+info:
+  title: juju reimbursement system
+  version: "1.0"
+servers:
+  - url: https://api.server.test/v1
+paths:
+  /user/login:
+    post:
+      responses:
+        "200":
+          description: OK
+tags:
+  - name: user
+    description: user operation
+  - name: admin
+    description: admin operation
+  - name: subadmin
+    description: subadmin operation
