@@ -17,17 +17,20 @@ paths:
           content:
             application/text:
               schema:
-                properties:
-                  token:
-                    type: string
+                $ref: '#components/schemas/normalResponsesData'
 
   /user/logout:
     post:
       tags:
         - user
-      security:
-        - bearerAuth: []
       responses:
+        '200':
+          description: logout
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/normalResponsesData'
+
         '401':
           $ref: '#components/responses/UnauthorizedError'
 
@@ -38,6 +41,53 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/registerBody'
       responses:
+        '200':
+          description: register
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/normalResponsesData'
+        '401':
+          $ref: '#components/responses/UnauthorizedError'
+
+  /user/voucher:
+    post:
+      tags:
+        - user
+      requestBody:
+        description: add voucher info
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/voucherInfo'
+      responses:
+        '200':
+          description: post voucher rsp
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/normalResponsesData'
+        '401':
+          $ref: '#components/responses/UnauthorizedError'
+
+    put:
+      tags:
+        - user
+      requestBody:
+        description: modify voucher info
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/voucherInfo'
+      responses:
+        '200':
+          description: put voucher rsp
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/normalResponsesData'
         '401':
           $ref: '#components/responses/UnauthorizedError'
 
@@ -50,22 +100,58 @@ tags:
     description: subadmin operation
 
 components:
+  schemas:
+    voucherInfo:
+      type: object
+      properties:
+        code:
+          type: string
+        serial_no:
+          type: string
+        amount:
+          type: integer
+        time:
+          type: string
+          format: date
+        comment:
+          # comments
+          type: string
+      required:
+        - code
+        - serial_no
+        - amount
+        - uid
+
+    accountInfo:
+      type: object
+      properties:
+        name:
+          type: string
+        password:
+          type: string
+          format: password
+      required:
+        - name
+        - password
+    normalResponsesData:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+      required:
+        - code
+        - message
+
   requestBodies:
     loginBody:
       description: log request body
       required: true
       content:
-        application/x-www-form-urlencoded:
+        application/json:
           schema:
-            type: object
-            properties:
-              name:
-                type: string
-              password:
-                type: string
-            required:
-              - name
-              - password
+            $ref: '#/components/schemas/accountInfo'
 
     registerBody:
       description: register request body
@@ -73,25 +159,30 @@ components:
       content:
         application/x-www-form-urlencoded:
           schema:
-            type: object
-            properties:
-              name:
-                type: string
-              password:
-                type: string
-              department:
-                type: string
-            required:
-              - name
-              - password
-              - department
+            allOf:
+              - $ref: '#/components/schemas/accountInfo'
+              - type: object
+                properties:
+                  department:
+                    type: string
+                required:
+                  - department
 
   responses:
     UnauthorizedError:
       description: Access token is missing or invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#components/schemas/normalResponsesData'
+
 
   securitySchemes:
     bearerAuth:            # arbitrary name for the security scheme
       type: http
       scheme: bearer
       bearerFormat: JWT    # optional, arbitrary value for documentation purposes
+
+# Apply the security globally to all operations
+security:
+  - bearerAuth: []
