@@ -7,51 +7,43 @@ servers:
 paths:
   /user/login:
     post:
+      summary: login user account
       tags:
         - user
       requestBody:
-        $ref: '#components/requestBodies/loginBody'
+        $ref: "#/components/requestBodies/loginBody"
       responses:
-        '200':
-          description: OK
-          content:
-            application/text:
-              schema:
-                $ref: '#components/schemas/normalResponsesData'
+        "200":
+          $ref: "#/components/responses/normalResponses"
 
   /user/logout:
     post:
+      summary: logout user account
       tags:
         - user
       responses:
-        '200':
-          description: logout
-          content:
-            application/json:
-              schema:
-                $ref: '#components/schemas/normalResponsesData'
+        "200":
+          $ref: "#/components/responses/normalResponses"
 
-        '401':
-          $ref: '#components/responses/UnauthorizedError'
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
 
   /user/register:
     post:
+      summary: register new user account
       tags:
         - user
       requestBody:
-        $ref: '#/components/requestBodies/registerBody'
+        $ref: "#/components/requestBodies/registerBody"
       responses:
-        '200':
-          description: register
-          content:
-            application/json:
-              schema:
-                $ref: '#components/schemas/normalResponsesData'
-        '401':
-          $ref: '#components/responses/UnauthorizedError'
+        "200":
+          $ref: "#/components/responses/normalResponses"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
 
   /user/voucher:
     post:
+      summary: add new voucher
       tags:
         - user
       requestBody:
@@ -60,18 +52,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/voucherInfo'
+              $ref: "#/components/schemas/voucherInfo"
       responses:
-        '200':
-          description: post voucher rsp
-          content:
-            application/json:
-              schema:
-                $ref: '#components/schemas/normalResponsesData'
-        '401':
-          $ref: '#components/responses/UnauthorizedError'
+        "200":
+          $ref: "#/components/responses/normalResponses"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
 
     put:
+      summary: modify voucher info
       tags:
         - user
       requestBody:
@@ -80,16 +69,204 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/voucherInfo'
+              $ref: "#/components/schemas/voucherInfo"
       responses:
-        '200':
-          description: put voucher rsp
-          content:
-            application/json:
-              schema:
-                $ref: '#components/schemas/normalResponsesData'
-        '401':
-          $ref: '#components/responses/UnauthorizedError'
+        "200":
+          $ref: "#/components/responses/normalResponses"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+
+    get:
+      summary: get a list of voucher
+      tags:
+        - user
+      parameters:
+        - $ref: "#/components/parameters/start_page"
+        - $ref: "#/components/parameters/page_size"
+      responses:
+        "200":
+          $ref: "#/components/responses/normalResponses"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+
+  /admin/login:
+    post:
+      summary: login admin account
+      tags:
+        - admin
+      requestBody:
+        $ref: "#/components/requestBodies/loginBody"
+      responses:
+        "200":
+          $ref: "#/components/responses/normalResponses"
+
+  /admin/logout:
+    post:
+      summary: logout admin account
+      tags:
+        - admin
+      responses:
+        "200":
+          $ref: "#/components/responses/normalResponses"
+
+  /admin/account/accept:
+    put:
+      summary: accept everyone account application
+      tags:
+        - admin
+      parameters:
+        - $ref: "#/components/parameters/account_id"
+      responses:
+        "200":
+          $ref: "#/components/responses/normalResponses"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+
+  /admin/account/reject:
+    put:
+      summary: reject everyone account application
+      tags:
+        - admin
+      parameters:
+        - $ref: "#/components/parameters/account_id"
+      responses:
+        "200":
+          $ref: "#/components/responses/normalResponses"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+
+  /admin/account/close:
+    put:
+      summary: close everyone account
+      tags:
+        - admin
+      parameters:
+        - $ref: "#/components/parameters/account_id"
+      responses:
+        "200":
+          $ref: "#/components/responses/normalResponses"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+
+  /admin/account/pending:
+    get:
+      summary: get a list of user account application
+      tags:
+        - admin
+      parameters:
+        - $ref: "#/components/parameters/start_page"
+        - $ref: "#/components/parameters/page_size"
+        - $ref: "#/components/parameters/role"
+        - $ref: "#/components/parameters/department"
+      responses:
+        "200":
+          $ref: "#/components/responses/normalResponses"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+
+  /subadmin/register:
+    post:
+      summary: register subadmin account
+      tags:
+        - subadmin
+      requestBody:
+        description: register request body
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/requestBodies/registerBody"
+                - type: object
+                  properties:
+                    department:
+                      type: string
+                  required:
+                    - department
+
+      responses:
+        "200":
+          $ref: "#/components/responses/normalResponses"
+
+  /subadmin/voucher/accept:
+    put:
+      summary: accept a voucher application belonging to this department
+      tags:
+        - subadmin
+      parameters:
+        - $ref: "#/components/parameters/voucher_id"
+      responses:
+        "200":
+          $ref: "#/components/responses/normalResponses"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+
+  /subadmin/voucher/reject:
+    put:
+      summary: reject a voucher application belonging to this department
+      tags:
+        - subadmin
+      parameters:
+        - $ref: "#/components/parameters/voucher_id"
+      responses:
+        "200":
+          $ref: "#/components/responses/normalResponses"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+
+  /subadmin/account/accept:
+    put:
+      summary: accept a user account application belonging to this department
+      tags:
+        - subadmin
+      parameters:
+        - $ref: "#/components/parameters/account_id"
+      responses:
+        "200":
+          $ref: "#/components/responses/normalResponses"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+
+  /subadmin/account/reject:
+    put:
+      summary: reject a user account application belonging to this department
+      tags:
+        - subadmin
+      parameters:
+        - $ref: "#/components/parameters/account_id"
+      responses:
+        "200":
+          $ref: "#/components/responses/normalResponses"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+
+  /subadmin/account/close:
+    put:
+      summary: close a user account belonging to this department
+      tags:
+        - subadmin
+      parameters:
+        - $ref: "#/components/parameters/account_id"
+
+      responses:
+        "200":
+          $ref: "#/components/responses/normalResponses"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+
+  /subadmin/account/pending:
+    get:
+      summary: get a list of account application belonging to this department
+      tags:
+        - subadmin
+      parameters:
+        - $ref: "#/components/parameters/start_page"
+        - $ref: "#/components/parameters/page_size"
+      responses:
+        "200":
+          $ref: "#/components/responses/normalResponses"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
 
 tags:
   - name: user
@@ -133,6 +310,7 @@ components:
       required:
         - name
         - password
+
     normalResponsesData:
       type: object
       properties:
@@ -144,6 +322,50 @@ components:
         - code
         - message
 
+  parameters:
+    start_page:
+      in: query
+      name: start_page
+      schema:
+        type: integer
+      required: true
+      description: start page index
+    page_size:
+      in: query
+      name: page_size
+      schema:
+        type: integer
+      required: true
+      description: page size
+    account_id:
+      in: query
+      name: account_id
+      schema:
+        type: string
+      required: true
+      description: account id
+    voucher_id:
+      in: query
+      name: voucher_id
+      schema:
+        type: string
+      required: true
+      description: voucher id
+    role:
+      in: query
+      name: role
+      schema:
+        type: string
+      required: false
+      description: account role(admin/subadmin/user)
+    department:
+      in: query
+      name: department
+      schema:
+        type: string
+      required: false
+      description: department name
+
   requestBodies:
     loginBody:
       description: log request body
@@ -151,7 +373,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/accountInfo'
+            $ref: "#/components/schemas/accountInfo"
 
     registerBody:
       description: register request body
@@ -160,7 +382,7 @@ components:
         application/x-www-form-urlencoded:
           schema:
             allOf:
-              - $ref: '#/components/schemas/accountInfo'
+              - $ref: "#/components/schemas/accountInfo"
               - type: object
                 properties:
                   department:
@@ -169,19 +391,24 @@ components:
                   - department
 
   responses:
+    normalResponses:
+      description: Normal response
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/normalResponsesData"
     UnauthorizedError:
       description: Access token is missing or invalid
       content:
         application/json:
           schema:
-            $ref: '#components/schemas/normalResponsesData'
-
+            $ref: "#/components/schemas/normalResponsesData"
 
   securitySchemes:
-    bearerAuth:            # arbitrary name for the security scheme
+    bearerAuth: # arbitrary name for the security scheme
       type: http
       scheme: bearer
-      bearerFormat: JWT    # optional, arbitrary value for documentation purposes
+      bearerFormat: JWT # optional, arbitrary value for documentation purposes
 
 # Apply the security globally to all operations
 security:
