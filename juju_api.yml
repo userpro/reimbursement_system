@@ -291,7 +291,8 @@ components:
           type: string
           format: date
         comment:
-          # comments
+          type: string
+        vtype:
           type: string
       required:
         - code
