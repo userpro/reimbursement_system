@@ -287,17 +287,18 @@ components:
           type: string
         amount:
           type: integer
-        time:
+        vtime:
           type: string
           format: date
-        comment:
-          type: string
         vtype:
+          type: string
+        comment:
           type: string
       required:
         - code
         - serial_no
         - amount
+        - vtype
         - uid
 
     accountInfo:
@@ -315,11 +316,14 @@ components:
     normalResponsesData:
       type: object
       properties:
+        token:
+          type: string
         code:
           type: integer
         message:
           type: string
       required:
+        - token
         - code
         - message
 
@@ -372,7 +376,7 @@ components:
       description: log request body
       required: true
       content:
-        application/json:
+        application/x-www-form-urlencoded:
           schema:
             $ref: "#/components/schemas/accountInfo"
 
