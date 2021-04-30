@@ -1,10 +1,12 @@
 from starlette.requests import Request
 
+from typing import Any
+
 from fastapi import APIRouter
 from app.models.response import NormalResponsesData
 
 router = APIRouter(
-    prefix='subadmin'
+    prefix='/subadmin'
 )
 
 

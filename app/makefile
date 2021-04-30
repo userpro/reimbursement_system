@@ -1,0 +1,6 @@
+all:
+	export PYTHONPATH=`pwd;cd ..`
+	uvicorn main:app --reload
+
+clean:
+	rm -rf __pycache__

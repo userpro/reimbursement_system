@@ -2,9 +2,10 @@ from starlette.requests import Request
 
 from fastapi import APIRouter
 from app.models.response import NormalResponsesData
+from app.models.voucher import Voucher
 
 router = APIRouter(
-    prefix='user'
+    prefix='/user'
 )
 
 
@@ -41,7 +42,7 @@ def get_user_voucher(start_page: int, page_size: int) -> NormalResponsesData:
 
 
 @router.put('/voucher', response_model=NormalResponsesData)
-def put_user_voucher(body: VoucherInfo) -> NormalResponsesData:
+def put_user_voucher(body: Voucher) -> NormalResponsesData:
     """
     modify voucher info
     """
@@ -49,7 +50,7 @@ def put_user_voucher(body: VoucherInfo) -> NormalResponsesData:
 
 
 @router.post('/voucher', response_model=NormalResponsesData)
-def post_user_voucher(body: VoucherInfo) -> NormalResponsesData:
+def post_user_voucher(body: Voucher) -> NormalResponsesData:
     """
     add new voucher
     """

@@ -10,7 +10,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.requests import Request
 
-from app.api import admin, subadmin, user
+from app.api.api import api_router
 from app.core.config import settings
 
 
@@ -30,6 +30,4 @@ if settings.BACKEND_CORS_ORIGINS:
         allow_headers=["*"],
     )
 
-app.include_router(admin)
-app.include_router(subadmin)
-app.include_router(user)
+app.include_router(api_router)
