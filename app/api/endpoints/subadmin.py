@@ -3,7 +3,7 @@ from starlette.requests import Request
 from typing import Any
 
 from fastapi import APIRouter
-from app.models.response import NormalResponsesData
+from app.schemas.response import NormalResponsesData
 
 router = APIRouter(
     prefix='/subadmin'

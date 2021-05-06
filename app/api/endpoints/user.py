@@ -1,8 +1,8 @@
 from starlette.requests import Request
 
 from fastapi import APIRouter
-from app.models.response import NormalResponsesData
-from app.models.voucher import Voucher
+from app.schemas.response import NormalResponsesData
+from app.schemas.voucher import Voucher
 
 router = APIRouter(
     prefix='/user'
