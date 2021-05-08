@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 
 class Code(Base):
     __tablename__ = 'code'
-    code = Column(String(100), index=True, nullable=False)
+    code = Column(String(100), index=True, nullable=False, unique=True)
     vtype = Column(String(50), nullable=False)
     comment = Column(String(150), nullable=True)
 
