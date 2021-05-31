@@ -13,12 +13,13 @@ if TYPE_CHECKING:
 
 
 class Account(Base):
-    __tablename__ = 'account'
+    __tablename__ = 't_juju_account'
     name = Column(String(10), index=True, nullable=False)
+    email = Column(String, unique=True, index=True, nullable=False)
     password = Column(String(20), nullable=False)
     department = Column(String(100), nullable=True)
-    role = Column(Integer, nullable=False)
-    enable = Column(Integer, nullable=False)
+    role = Column(Integer, nullable=False)  # 0: normal, 1: subadmin, 2: admin
+    enable = Column(Integer, nullable=False)  # 0: disable, 1: able
     ip = Column(String(150), nullable=True)
 
-    voucher = relationship("Voucher", back_ref="account")
+    voucher = relationship("Voucher", back_ref="t_juju_account")

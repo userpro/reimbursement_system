@@ -10,8 +10,8 @@ from app.schemas.voucher import VoucherCreate, VoucherUpdate
 
 class CRUDVoucher(CRUDBase[Voucher, VoucherCreate, VoucherUpdate]):
     def create_with_owner(
-        self, db: Session, *, obj_in: ItemCreate, owner_id: int
-    ) -> Item:
+        self, db: Session, *, obj_in: VoucherCreate, owner_id: int
+    ) -> Voucher:
         obj_in_data = jsonable_encoder(obj_in)
         db_obj = self.model(**obj_in_data, owner_id=owner_id)
         db.add(db_obj)
@@ -21,7 +21,7 @@ class CRUDVoucher(CRUDBase[Voucher, VoucherCreate, VoucherUpdate]):
 
     def get_multi_by_owner(
         self, db: Session, *, owner_id: int, skip: int = 0, limit: int = 100
-    ) -> List[Item]:
+    ) -> List[Voucher]:
         return (
             db.query(self.model)
             .filter(Voucher.owner_id == owner_id)

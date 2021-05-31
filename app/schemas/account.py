@@ -1,30 +1,30 @@
 from typing import Optional
 
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, IPvAnyNetwork
 
 
 # Shared properties
 class AccountBase(BaseModel):
+    name: str
     email: Optional[EmailStr] = None
-    is_active: Optional[bool] = True
-    is_superuser: bool = False
-    full_name: Optional[str] = None
+    department: str
+    # role: int = 0 # can't send from the API
+    enable: int = 0
+    password: Optional[str] = None
+    ip: Optional[IPvAnyNetwork] = None
 
 
 # Properties to receive via API on creation
 class AccountCreate(AccountBase):
-    email: EmailStr
-    password: str
+    pass
 
 
 # Properties to receive via API on update
 class AccountUpdate(AccountBase):
-    password: Optional[str] = None
+    pass
 
 
 class AccountInDBBase(AccountBase):
-    id: Optional[int] = None
-
     class Config:
         orm_mode = True
 
@@ -36,4 +36,4 @@ class Account(AccountInDBBase):
 
 # Additional properties stored in DB
 class AccountInDB(AccountInDBBase):
-    hashed_password: str
+    pass

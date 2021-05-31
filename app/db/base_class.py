@@ -6,7 +6,7 @@ from sqlalchemy.ext.declarative import as_declarative, declared_attr
 
 @as_declarative()
 class Base:
-    id: Column(Integer, primary_key=True, autoincrement=True)
+    id: Column(Integer, primary_key=True, index=True, autoincrement=True)
     __name__: str
     # Generate __tablename__ automatically
 

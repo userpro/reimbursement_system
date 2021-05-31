@@ -1,3 +1,5 @@
+import datetime
+
 from typing import Optional
 
 from pydantic import BaseModel
@@ -5,13 +7,17 @@ from pydantic import BaseModel
 
 # Shared properties
 class VoucherBase(BaseModel):
-    title: Optional[str] = None
-    description: Optional[str] = None
+    code: str
+    serial_no: str
+    amount: float
+    vtime: datetime.datetime
+    vtype: str
+    comment: Optional[str] = None
 
 
 # Properties to receive on item creation
 class VoucherCreate(VoucherBase):
-    title: str
+    pass
 
 
 # Properties to receive on item update
@@ -21,9 +27,6 @@ class VoucherUpdate(VoucherBase):
 
 # Properties shared by models stored in DB
 class VoucherInDBBase(VoucherBase):
-    id: int
-    title: str
-    owner_id: int
 
     class Config:
         orm_mode = True
@@ -36,4 +39,4 @@ class Voucher(VoucherInDBBase):
 
 # Properties properties stored in DB
 class VoucherInDB(VoucherInDBBase):
-    pass
+    owner_id: int

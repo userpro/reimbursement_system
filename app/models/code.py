@@ -13,9 +13,9 @@ if TYPE_CHECKING:
 
 
 class Code(Base):
-    __tablename__ = 'code'
+    __tablename__ = 't_juju_code'
     code = Column(String(100), index=True, nullable=False, unique=True)
     vtype = Column(String(50), nullable=False)
     comment = Column(String(150), nullable=True)
 
-    voucher = relationship("Voucher", back_ref="code")
+    voucher = relationship("Voucher", back_ref="t_juju_code")

@@ -9,10 +9,10 @@ from app.schemas.account import AccountCreate, AccountUpdate
 
 
 class CRUDAccount(CRUDBase[Account, AccountCreate, AccountUpdate]):
-    def get_by_email(self, db: Session, *, email: str) -> Optional[User]:
+    def get_by_email(self, db: Session, *, email: str) -> Optional[Account]:
         return db.query(Account).filter(Account.email == email).first()
 
-    def create(self, db: Session, *, obj_in: UserCreate) -> User:
+    def create(self, db: Session, *, obj_in: AccountCreate) -> Account:
         db_obj = Account(
             email=obj_in.email,
             hashed_password=get_password_hash(obj_in.password),
@@ -25,8 +25,8 @@ class CRUDAccount(CRUDBase[Account, AccountCreate, AccountUpdate]):
         return db_obj
 
     def update(
-        self, db: Session, *, db_obj: User, obj_in: Union[UserUpdate, Dict[str, Any]]
-    ) -> User:
+        self, db: Session, *, db_obj: Account, obj_in: Union[AccountUpdate, Dict[str, Any]]
+    ) -> Account:
         if isinstance(obj_in, dict):
             update_data = obj_in
         else:
@@ -37,7 +37,7 @@ class CRUDAccount(CRUDBase[Account, AccountCreate, AccountUpdate]):
             update_data["hashed_password"] = hashed_password
         return super().update(db, db_obj=db_obj, obj_in=update_data)
 
-    def authenticate(self, db: Session, *, email: str, password: str) -> Optional[User]:
+    def authenticate(self, db: Session, *, email: str, password: str) -> Optional[Account]:
         user = self.get_by_email(db, email=email)
         if not user:
             return None
@@ -45,10 +45,10 @@ class CRUDAccount(CRUDBase[Account, AccountCreate, AccountUpdate]):
             return None
         return user
 
-    def is_active(self, user: User) -> bool:
+    def is_active(self, user: Account) -> bool:
         return user.is_active
 
-    def is_superuser(self, user: User) -> bool:
+    def is_superuser(self, user: Account) -> bool:
         return user.is_superuser
 
 
